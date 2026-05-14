@@ -771,6 +771,8 @@ div[data-testid="stNumberInput"] button {
 
 /* Fix: hide any raw closing tags that may render */
 .stMarkdownContainer p:empty { display: none !important; }
+.stMarkdownContainer p { line-height: 0 !important; }
+.stMarkdownContainer p:has(code) { line-height: 1.6 !important; }
 </style>
 """
 
@@ -1403,7 +1405,7 @@ def _render_appointment_list(appts, show_manage=False):
         icon  = {"Pending":"🟡","Confirmed":"🟢","Cancelled":"🔴"}.get(a['status'],"⚪")
         status_cls = {"Pending":"status-pending","Confirmed":"status-confirm","Cancelled":"status-cancel"}.get(a['status'],"")
         email_info = f" &nbsp;·&nbsp; 📧 {a['patient_email']}" if a.get('patient_email') else ""
-        reminder_badge = "<span style='color:var(--teal);font-size:0.75rem;'>📧 Reminder sent</span>" if a.get('reminder_sent') else ""
+        reminder_badge = "<span style='color:var(--teal);font-size:0.75rem;'>📧 Reminder sent</span>" if a.get('reminder_sent') else "<!-- -->"
 
         st.markdown(f"""
         <div class="appt-row">
@@ -1778,19 +1780,7 @@ def main():
         col2.metric("Appts", ac)
         st.metric("Messages", mc)
 
-        st.divider()
-        st.markdown("### 🔧 Tools")
-        if st.button("📧 Send Test Email", use_container_width=True):
-            ok, reason = send_email(
-                os.getenv("GMAIL_ADDRESS",""),
-                "Smart Doctor Connect — Test ✅",
-                "Email working!\n\nSent from Smart Doctor Connect AI."
-            )
-            if ok:
-                st.success("✅ Test email sent!")
-            else:
-                st.error(f"❌ {reason}")
-
+       
         st.divider()
         st.markdown("### ⏰ Reminders")
         pending = db_get_pending_reminders()
