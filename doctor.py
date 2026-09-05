@@ -1132,7 +1132,7 @@ def ai_suggest_doctors(symptoms):
             for d in doctors
         ])
         res = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model="qwen/qwen3.6-27b",
             messages=[{"role":"user","content":
                 f"Patient symptoms: {symptoms}\n\nDoctors:\n{doc_list}\n\n"
                 f"Suggest top 3 most suitable doctors. Prefer available. "
