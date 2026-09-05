@@ -1177,7 +1177,7 @@ def ai_chatbot(doctor_name, user_msg, chat_history):
         )}]
         for m in chat_history: msgs.append(m)
         msgs.append({"role":"user","content":user_msg})
-        res = client.chat.completions.create(model="llama-3.3-70b-versatile", messages=msgs, max_tokens=400)
+        res = client.chat.completions.create(model="qwen/qwen3.6-27b", messages=msgs, max_tokens=400)
         return res.choices[0].message.content
     except Exception as e:
         return f"AI error: {e}. Please call the doctor directly."
